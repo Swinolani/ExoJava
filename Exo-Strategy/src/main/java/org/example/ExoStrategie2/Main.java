@@ -7,4 +7,6 @@ public class Main {
         calculTaxe.conversionTax(new ImpotForfaitaireStrategy());
         calculTaxe.conversionTax(new TVAStrategy());
     }
+
+
 }

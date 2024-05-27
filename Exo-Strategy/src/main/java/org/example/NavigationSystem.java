@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class NavigationSystem {
+
     private String destination;
 
     public void startNavigation(StrategiesNavigation typeDeNavigation) {
