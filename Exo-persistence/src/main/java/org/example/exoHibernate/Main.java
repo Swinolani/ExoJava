@@ -45,6 +45,7 @@ public class Main {
             produitUpdate.setProMarque("MARQUE MODIFIe");
             session.update(produitUpdate);
 
+            // Suppresion du produit dont l'id est egal à 3
             Produit produitSuppr=session.load(Produit.class,3);
             session.delete(produitSuppr);
 
@@ -111,6 +112,52 @@ public class Main {
                 System.out.println("\n");
                 System.out.println(produit.getProId() +' '+produit.getProReference());
             }
+            session.getTransaction().commit();
+
+            //Exo 4
+            System.out.println("\nEXERCICE 4 QUESTION 1-----------------------------  \n");
+            // 1.
+            session.getTransaction().begin();
+            Query queryExo4Q1 = session.createQuery("from Produit where proMarque = :marque");
+            queryExo4Q1.setParameter("marque", "nokia");
+
+            List<Produit> listProduitExo4Q1 = queryExo4Q1.list();
+            for (Produit produit : listProduitExo4Q1) {
+                System.out.println("\n");
+                System.out.println(produit.getProStock());
+            }
+            session.getTransaction().commit();
+
+            System.out.println("\nEXERCICE 4 QUESTION 2-----------------------------  \n");
+            // 2.
+            session.getTransaction().begin();
+            Query queryExo4Q2 = session.createQuery("select avg(proPrix) from Produit");
+            queryExo4Q1.setParameter("marque", "nokia");
+
+            double moyenneExo4Q2 = (double) queryExo4Q2.uniqueResult();
+            System.out.println("la moyenne des prix vaut : "+moyenneExo4Q2);
+            session.getTransaction().commit();
+
+            System.out.println("\nEXERCICE 4 QUESTION 3-----------------------------  \n");
+            // 3.
+            session.getTransaction().begin();
+            Query queryExo4Q3 = session.createQuery("from Produit where proMarque = :marque");
+            queryExo4Q3.setParameter("marque", "nokia");
+
+            List<Produit> listProduitExo4Q3 = queryExo4Q3.list();
+            for (Produit produit : listProduitExo4Q3) {
+                System.out.println("\n");
+                System.out.println(produit.toString());
+            }
+            session.getTransaction().commit();
+
+            System.out.println("\nEXERCICE 4 QUESTION 4-----------------------------  \n");
+            // 4.
+            session.getTransaction().begin();
+            Query queryExo4Q4 = session.createQuery("delete from Produit where proMarque = :marque");
+            queryExo4Q4.setParameter("marque", "nokia");
+
+            queryExo4Q4.executeUpdate();
             session.getTransaction().commit();
 
             session.close();
