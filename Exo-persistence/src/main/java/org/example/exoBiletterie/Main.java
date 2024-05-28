@@ -1,4 +1,4 @@
-package org.example;
+package org.example.exoBiletterie;
 
 import java.util.List;
 

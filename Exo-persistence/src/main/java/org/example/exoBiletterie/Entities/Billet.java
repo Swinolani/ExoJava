@@ -1,8 +1,8 @@
-package org.example.Entities;
+package org.example.exoBiletterie.Entities;
 
 import lombok.Builder;
 import lombok.Data;
-import org.example.Util.TypeDePlace;
+import org.example.exoBiletterie.Util.TypeDePlace;
 
 import javax.persistence.*;
 

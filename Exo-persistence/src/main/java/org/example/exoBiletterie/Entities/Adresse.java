@@ -1,4 +1,4 @@
-package org.example.Entities;
+package org.example.exoBiletterie.Entities;
 
 
 import javax.persistence.Inheritance;

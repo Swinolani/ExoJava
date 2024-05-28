@@ -1,4 +1,4 @@
-package org.example.Util;
+package org.example.exoBiletterie.Util;
 
 public enum TypeDePlace {
     STANDARD,
