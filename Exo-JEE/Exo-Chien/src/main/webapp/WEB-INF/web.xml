@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="https://jakarta.ee/xml/ns/jakartaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd"
+         version="6.0">
+    <display-name>Gestion des Chiens</display-name>
+
+    <servlet>
+        <servlet-name>AjouterChienServlet</servlet-name>
+        <servlet-class>com.swino.exochien.servlet.AjouterChienServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AjouterChienServlet</servlet-name>
+        <url-pattern>/ajouterChien</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>ListeChiensServlet</servlet-name>
+        <servlet-class>com.swino.exochien.servlet.ListeChiensServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ListeChiensServlet</servlet-name>
+        <url-pattern>/chiens</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>DetailsChienServlet</servlet-name>
+        <servlet-class>com.swino.exochien.servlet.DetailsChienServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>DetailsChienServlet</servlet-name>
+        <url-pattern>/detailsChien</url-pattern>
+    </servlet-mapping>
+</web-app>
