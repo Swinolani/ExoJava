@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Offer List</title>
+</head>
+<body>
+<h1>Offer List</h1>
+<table>
+    <thead>
+    <tr>
+        <th>Title</th>
+        <th>Description</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="offer : ${offers}">
+        <td th:text="${offer.title}"></td>
+        <td th:text="${offer.description}"></td>
+        <td>
+            <a th:href="@{/recruitment/offers/{id}(id=${offer.id})}">Details</a>
+            <!-- Add links/buttons for edit and delete -->
+        </td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

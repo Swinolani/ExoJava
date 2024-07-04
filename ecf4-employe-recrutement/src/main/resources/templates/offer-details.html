@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${offer.title} + ' Details'"></title>
+</head>
+<body>
+<h1 th:text="${offer.title} + ' Details'"></h1>
+<p th:text="${offer.description}"></p>
+
+<h2>Applications</h2>
+<table>
+    <thead>
+    <tr>
+        <th>Candidate Name</th>
+        <th>Email</th>
+        <th>Resume</th>
+        <th>Interview Status</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="application : ${applications}">
+        <td th:text="${application.candidateName}"></td>
+        <td th:text="${application.email}"></td>
+        <td th:text="${application.resume}"></td>
+        <td th:text="${application.interviewStatus}"></td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

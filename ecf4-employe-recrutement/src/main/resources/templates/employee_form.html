@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Gestion des Employés</title>
+    <link rel="stylesheet" type="text/css" href="/css/styles.css">
+</head>
+<body>
+<h1>Gestion des Employés</h1>
+
+<!-- Formulaire pour ajouter ou modifier un employé -->
+<form th:action="@{/employees/save}" th:object="${employee}" method="post">
+    <input type="hidden" th:field="*{id}" />
+
+    <div>
+        <label for="name">Nom:</label>
+        <input type="text" id="name" th:field="*{name}" required />
+    </div>
+
+    <div>
+        <label for="position">Poste:</label>
+        <input type="text" id="position" th:field="*{position}" required />
+    </div>
+
+    <div>
+        <label for="department">Département:</label>
+        <select id="department" th:field="*{department.id}" required>
+            <option th:each="department : ${departments}"
+                    th:value="${department.id}"
+                    th:text="${department.name}">Département</option>
+        </select>
+    </div>
+
+    <div>
+        <button type="submit">Enregistrer</button>
+    </div>
+</form>
+
+<h2>Liste des Employés</h2>
+
+<table>
+    <thead>
+    <tr>
+        <th>Nom</th>
+        <th>Poste</th>
+        <th>Département</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="employee : ${employees}">
+        <td th:text="${employee.name}">Nom</td>
+        <td th:text="${employee.position}">Poste</td>
+        <td th:text="${employee.department.name}">Département</td>
+        <td>
+            <a th:href="@{/employees/edit/{id}(id=${employee.id})}">Modifier</a> |
+            <a th:href="@{/employees/delete/{id}(id=${employee.id})}" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet employé ?');">Supprimer</a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>
