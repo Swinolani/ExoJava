@@ -51,7 +51,7 @@ public class UserService implements UserDetailsService {
             user.setPwd(userDetails.getPwd());
             user.setRole(userDetails.getRole());
             user.setCreateDt(userDetails.getCreateDt());
-            user.setEnabled(userDetails.isEnabled());
+            user.setEnable(userDetails.isEnabled());
             return userRepository.save(user);
         }).orElseGet(() -> {
             userDetails.setId(id);

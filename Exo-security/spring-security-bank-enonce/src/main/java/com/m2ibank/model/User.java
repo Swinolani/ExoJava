@@ -39,7 +39,7 @@ public class User implements UserDetails {
     @Column(name = "create_dt")
     private String createDt;
 
-    private boolean isEnabled=true;
+    private boolean enable=true;
 
 
     @Override
@@ -54,7 +54,7 @@ public class User implements UserDetails {
 
     @Override
     public String getUsername() {
-        return name;
+        return email;
     }
 
     @Override
@@ -74,6 +74,6 @@ public class User implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return isEnabled;
+        return enable;
     }
 }
