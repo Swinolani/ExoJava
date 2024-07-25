@@ -1,0 +1,62 @@
+services:
+  db:
+    image: mysql:latest
+    container_name: container-mysql
+    environment:
+      MYSQL_DATABASE: employee
+      MYSQL_ROOT_PASSWORD: password
+    ports:
+      - '3307:3306'
+    networks:
+      - exercice-docker-compose
+    volumes:
+      - mysql-data:/var/lib/mysql
+
+  phpmyadmin:
+    image: phpmyadmin
+    container_name: container-phpmyadmin
+    restart: always
+    ports:
+      - '8081:80'
+    networks:
+      - exercice-docker-compose
+    environment:
+      PMA_USER: root
+      PMA_PASSWORD: password
+      PMA_HOST: container-mysql
+
+  spring:
+    image: spring-image
+    container_name: container-spring
+    build:
+      context: ./back_employee
+      dockerfile: Dockerfile
+    ports:
+      - '8080:8080'
+    depends_on:
+      - db
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/employee
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: password
+    networks:
+      - exercice-docker-compose
+
+  react:
+    image: react-image
+    container_name: container-react
+    build:
+      context: ./front_employee
+      dockerfile: Dockerfile
+    ports:
+      - '3000:80'
+    depends_on:
+      - spring
+    networks:
+      - exercice-docker-compose
+
+networks:
+  exercice-docker-compose:
+
+volumes:
+  mysql-data:

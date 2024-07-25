@@ -1,26 +1,45 @@
+# Pour l'exo, ce sont les services db et phpmyadmin pour l'exo
 services:
-  mysql:
+  db:
     image: 'mysql:latest'
+    container_name: local_mysql_db
     environment:
       - 'MYSQL_DATABASE=dbsecurity'
       - 'MYSQL_PASSWORD=fjteigti'
       - 'MYSQL_ROOT_PASSWORD=ururfgyiuz'
       - 'MYSQL_USER=swino'
     ports:
-      - '3306'
+      - '3306:3306'
     networks:
       - todolist-back
     volumes:
       - mysql-data:/var/lib/mysql
+
+  phpmyadmin:
+    image: phpmyadmin
+    container_name: container-phpmyadmin
+    restart: always
+    ports:
+      - 8081:80
+    networks:
+      - todolist-back
+    environment:
+      - PMA_USER=swino
+      - PMA_PASSWORD=fjteigti
+      - PMA_HOST=local_mysql_db
+
   spring:
     image: "tp-todolist-spring"
-    build: .
+    container_name: container-spring-todo
+    build:
+      context: .
+      dockerfile: Dockerfile
     ports:
       - '8080:8080'
     depends_on:
-      - mysql
+      - db
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/dbsecurity
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/dbsecurity
       SPRING_DATASOURCE_USERNAME: swino
       SPRING_DATASOURCE_PASSWORD: fjteigti
     networks:
@@ -32,4 +51,3 @@ networks:
 
 volumes:
   mysql-data:
-
