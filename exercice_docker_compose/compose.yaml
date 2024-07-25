@@ -18,6 +18,8 @@ services:
     restart: always
     ports:
       - '8081:80'
+    depends_on:
+      - db
     networks:
       - exercice-docker-compose
     environment:
