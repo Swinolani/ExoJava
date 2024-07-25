@@ -8,3 +8,28 @@ services:
       - 'MYSQL_USER=swino'
     ports:
       - '3306'
+    networks:
+      - todolist-back
+    volumes:
+      - mysql-data:/var/lib/mysql
+  spring:
+    image: "tp-todolist-spring"
+    build: .
+    ports:
+      - '8080:8080'
+    depends_on:
+      - mysql
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/dbsecurity
+      SPRING_DATASOURCE_USERNAME: swino
+      SPRING_DATASOURCE_PASSWORD: fjteigti
+    networks:
+      - todolist-back
+
+networks:
+  todolist-back:
+
+
+volumes:
+  mysql-data:
+
