@@ -1,3 +1,12 @@
+FROM maven AS builder
+
+COPY pom.xml .
+RUN mvn dependancy:go-offline
+
+COPY src ./src
+RUN mvn package -DskipTests
+
+
 FROM openjdk:17-jdk
 
 WORKDIR /app
