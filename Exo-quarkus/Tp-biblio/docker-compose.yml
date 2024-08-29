@@ -1,0 +1,168 @@
+version: '3.8'
+
+services:
+  usermysql:
+    image: mysql
+    container_name: user-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: userdb
+      MYSQL_USER: swino
+      MYSQL_PASSWORD: dfrfbebedfe
+    ports:
+      - "3306:3306"
+    volumes:
+      - user-mysql-data:/var/lib/mysql
+    networks:
+      - backend
+
+  bookmysql:
+    image: mysql
+    container_name: book-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: bookdb
+      MYSQL_USER: swino
+      MYSQL_PASSWORD: ntfhrzbrhns
+    ports:
+      - "3307:3306"
+    volumes:
+      - book-mysql-data:/var/lib/mysql
+    networks:
+      - backend
+
+  mysql3:
+    image: mysql:8.0
+    container_name: mysql3
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword3
+      MYSQL_DATABASE: db3
+      MYSQL_USER: user3
+      MYSQL_PASSWORD: password3
+    ports:
+      - "3308:3306"
+    volumes:
+      - mysql3-data:/var/lib/mysql
+    networks:
+      - backend
+
+  mysql4:
+    image: mysql:8.0
+    container_name: mysql4
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword4
+      MYSQL_DATABASE: db4
+      MYSQL_USER: user4
+      MYSQL_PASSWORD: password4
+    ports:
+      - "3309:3306"
+    volumes:
+      - mysql4-data:/var/lib/mysql
+    networks:
+      - backend
+
+  mysql5:
+    image: mysql:8.0
+    container_name: mysql5
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword5
+      MYSQL_DATABASE: db5
+      MYSQL_USER: user5
+      MYSQL_PASSWORD: password5
+    ports:
+      - "3310:3306"
+    volumes:
+      - mysql5-data:/var/lib/mysql
+    networks:
+      - backend
+
+  user-service:
+    build:
+      context: ./user-service
+      dockerfile: src/main/docker/Dockerfile.jvm
+    container_name: user-container
+    environment:
+      - QUARKUS_DATASOURCE_URL=jdbc:mysql://mysql1:3306/userdb
+      - QUARKUS_DATASOURCE_USERNAME=swino
+      - QUARKUS_DATASOURCE_PASSWORD=dfrfbebedfe
+    ports:
+      - "8081:8080"
+    depends_on:
+      - usermysql
+    networks:
+      - backend
+
+  book-service:
+    build:
+      context: ./book-service
+      dockerfile: src/main/docker/Dockerfile.jvm
+    container_name: book-container
+    environment:
+      - QUARKUS_DATASOURCE_URL=jdbc:mysql://mysql2:3306/bookdb
+      - QUARKUS_DATASOURCE_USERNAME=swino
+      - QUARKUS_DATASOURCE_PASSWORD=ntfhrzbrhns
+    ports:
+      - "8082:8080"
+    depends_on:
+      - bookmysql
+    networks:
+      - backend
+
+  review-service:
+    build:
+      context: ./user-service
+      dockerfile: src/main/docker/Dockerfile.jvm
+    container_name: review-service
+    environment:
+      - QUARKUS_DATASOURCE_URL=jdbc:mysql://mysql3:3306/db3
+      - QUARKUS_DATASOURCE_USERNAME=user3
+      - QUARKUS_DATASOURCE_PASSWORD=password3
+    ports:
+      - "8083:8080"
+    depends_on:
+      - mysql3
+    networks:
+      - backend
+
+  borrow-service:
+    build:
+      context: ./user-service
+      dockerfile: src/main/docker/Dockerfile.jvm
+    container_name: borrow-service
+    environment:
+      - QUARKUS_DATASOURCE_URL=jdbc:mysql://mysql4:3306/db4
+      - QUARKUS_DATASOURCE_USERNAME=user4
+      - QUARKUS_DATASOURCE_PASSWORD=password4
+    ports:
+      - "8084:8080"
+    depends_on:
+      - mysql4
+    networks:
+      - backend
+
+  another-service:
+    build:
+      context: ./user-service
+      dockerfile: src/main/docker/Dockerfile.jvm
+    container_name: another-service
+    environment:
+      - QUARKUS_DATASOURCE_URL=jdbc:mysql://mysql5:3306/db5
+      - QUARKUS_DATASOURCE_USERNAME=user5
+      - QUARKUS_DATASOURCE_PASSWORD=password5
+    ports:
+      - "8085:8080"
+    depends_on:
+      - mysql5
+    networks:
+      - backend
+
+volumes:
+  user-mysql-data:
+  book-mysql-data:
+  mysql3-data:
+  mysql4-data:
+  mysql5-data:
+
+networks:
+  backend:
+    driver: bridge

@@ -1,0 +1,68 @@
+services:
+  postgres:
+    image: postgres
+    container_name: client-container
+    environment:
+      POSTGRES_USER: swino
+      POSTGRES_PASSWORD: gnntrntneedeb
+      POSTGRES_DB: clientdb
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - quarkus-network
+
+  mysql:
+    image: mysql:8
+    container_name: product-container
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: productdb
+      MYSQL_USER: swino
+      MYSQL_PASSWORD: dfrfbebedfe
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - quarkus-network
+
+  quarkus-app-client:
+    build:
+      context: ./exo_client_quarkus
+      dockerfile: src/main/docker/Dockerfile.jvm
+    container_name: quarkus-app-client
+    ports:
+      - "8081:8080"  # Expose on port 8081 to avoid conflict
+    environment:
+      QUARKUS_DATASOURCE_URL: jdbc:postgresql://postgres:5432/clientdb
+      QUARKUS_DATASOURCE_USERNAME: swino
+      QUARKUS_DATASOURCE_PASSWORD: gnntrntneedeb
+    depends_on:
+      - postgres
+    networks:
+      - quarkus-network
+
+  quarkus-app-product:
+    build:
+      context: ./exo_product_quarkus
+      dockerfile: src/main/docker/Dockerfile.jvm
+    container_name: quarkus-app-product
+    ports:
+      - "8082:8080"  # Expose on port 8082 to avoid conflict
+    environment:
+      QUARKUS_DATASOURCE_URL: jdbc:mysql://mysql:3306/productdb
+      QUARKUS_DATASOURCE_USERNAME: swino
+      QUARKUS_DATASOURCE_PASSWORD: dfrfbebedfe
+    depends_on:
+      - mysql
+    networks:
+      - quarkus-network
+
+volumes:
+  postgres_data:
+  mysql_data:
+
+networks:
+  quarkus-network:

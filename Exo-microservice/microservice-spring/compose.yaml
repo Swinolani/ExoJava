@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  db:
+    image: 'mysql:latest'
+    container_name: microservice-user
+    environment:
+      - 'MYSQL_DATABASE=userdb'
+      - 'MYSQL_PASSWORD=btegteg'
+      - 'MYSQL_ROOT_PASSWORD=grsgggg'
+      - 'MYSQL_USER=swino'
+    ports:
+      - '3306:3306'
+    networks:
+      - microservice-network
+
+networks:
+  microservice-network:
