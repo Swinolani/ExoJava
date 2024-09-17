@@ -1,0 +1,123 @@
+services:
+  # Partie front
+  react:
+    container_name: container-react
+    image: image-client:latest
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    ports:
+      - '3000:80'
+    depends_on:
+      - mysql
+      - redis
+    networks:
+      - ecf-docker-compose
+    env_file: .env
+
+  # Microservice 1
+  authentication-service:
+    container_name: authentication-service-container
+    image: authentication-service:latest
+    build:
+      context: ./server/authentication-service
+      dockerfile: Dockerfile
+    ports:
+      - "7000:8080"
+    networks:
+      - ecf-docker-compose
+    env_file: .env
+    environment:
+      PORT: ${AUTHENTICATION_SERVICE_PORT}
+    depends_on:
+      - mysql
+      - redis
+      - react
+
+  # Microservice 2
+  common-data-service:
+    container_name: common-data-service-container
+    image: common-data-service:latest
+    build:
+      context: ./server/common-data-service
+      dockerfile: Dockerfile
+    ports:
+      - "9000:8080"
+    networks:
+      - ecf-docker-compose
+    env_file: .env
+    environment:
+      PORT: ${COMMON_DATA_SERVICE_PORT}
+    depends_on:
+      - mysql
+      - redis
+      - react
+
+  # Microservice 3 (REDIS)
+  payment-service:
+    container_name: payment-service-container
+    image: payment-service:latest
+    build:
+      context: ./server/payment-service
+      dockerfile: Dockerfile
+    ports:
+      - "9050:8080"
+    networks:
+      - ecf-docker-compose
+    env_file: .env
+    environment:
+      PORT: ${PAYMENT_SERVICE_PORT}
+    depends_on:
+      - redis
+      - react
+      - mysql
+
+  # Microservice 4
+  search-suggestion-service:
+    container_name: search-suggestion-service-container
+    image: search-suggestion-service:latest
+    build:
+      context: ./server/search-suggestion-service
+      dockerfile: Dockerfile
+    ports:
+      - "10000:8080"
+    environment:
+      PORT: ${SEARCH_SUGGESTION_SERVICE_PORT}
+    networks:
+      - ecf-docker-compose
+    depends_on:
+      - react
+      - payment-service
+      - authentication-service
+      - common-data-service
+      - redis
+      - mysql
+
+  # MySQL database 1
+  mysql:
+    image: mysql:latest
+    env_file: .env
+    ports:
+      - "3306:3306"
+    networks:
+      - ecf-docker-compose
+    volumes:
+      - mysql-data:/var/lib/mysql
+
+  # Redis database
+  redis:
+    image: redis:latest
+    ports:
+      - "6379:6379"
+    env_file: .env
+    networks:
+      - ecf-docker-compose
+    volumes:
+      - redis-data:/data
+
+volumes:
+  mysql-data:
+  redis-data:
+
+networks:
+  ecf-docker-compose:
